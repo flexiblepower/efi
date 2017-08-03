@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:StorageSystemDescription efi:efiVersion="2.0"
+  xmlns:efi="http://www.flexiblepower.org/efi-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>battery-1</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:flexibilityUpdateId>message-032</efi:flexibilityUpdateId>
+  <efi:validFrom>2001-12-31T12:00:00</efi:validFrom>
+  <efi:actuatorBehaviours>
+    <efi:actuatorBehaviour efi:actuatorId="0">
+      <efi:runningModes>
+        <efi:discreteRunningMode efi:id="0" efi:label="Off">
+          <efi:discreteRunningModeElement efi:fillLevelLowerBound="0"
+            efi:fillLevelUpperBound="100">
+            <efi:fillingRate>0.0</efi:fillingRate>
+            <efi:runningCost>0.0001</efi:runningCost>
+            <efi:electricityConsumption>0.0</efi:electricityConsumption>
+          </efi:discreteRunningModeElement>
+        </efi:discreteRunningMode>
+        <efi:continuousRunningMode efi:id="1" efi:label="On">
+          <efi:continuousRunningModeElement
+            efi:fillLevelLowerBound="0" efi:fillLevelUpperBound="100">
+            <efi:lowerBound>
+              <efi:fillingRate>0.0</efi:fillingRate>
+              <efi:runningCost>0</efi:runningCost>
+              <efi:electricityConsumption>0</efi:electricityConsumption>
+            </efi:lowerBound>
+            <efi:upperBound>
+              <efi:fillingRate>0.001</efi:fillingRate>
+              <efi:runningCost>0.000001</efi:runningCost>
+              <efi:electricityConsumption>1000</efi:electricityConsumption>
+            </efi:upperBound>
+          </efi:continuousRunningModeElement>
+        </efi:continuousRunningMode>
+      </efi:runningModes>
+      <efi:timers>
+        <efi:timer efi:id="0" efi:label="onTimer" efi:duration="PT5S" />
+      </efi:timers>
+      <efi:transitions>
+        <efi:transition efi:fromRunningModeId="0" efi:toRunningModeId="0"
+          efi:transitionCost="0.0" efi:transitionTime="P1D">
+          <efi:startTimers>
+            <efi:timerReference efi:timerId="0" />
+          </efi:startTimers>
+          <efi:blockingTimers>
+            <efi:timerReference efi:timerId="0" />
+          </efi:blockingTimers>
+        </efi:transition>
+      </efi:transitions>
+    </efi:actuatorBehaviour>
+  </efi:actuatorBehaviours>
+  <efi:leakageBehaviour>
+    <efi:leakageElement efi:fillLevelLowerBound="0" efi:fillLevelUpperBound="100"
+      efi:leakageRate="0.0" />
+  </efi:leakageBehaviour>
+</efi:StorageSystemDescription>

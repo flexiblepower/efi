@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:InflexibleForecast efi:efiVersion="2.0" xmlns:efi="http://www.flexiblepower.org/efi-2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>Inflexible-device-001</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:flexibilityUpdateId>message002</efi:flexibilityUpdateId>
+  <efi:validFrom>2001-12-31T12:00:00</efi:validFrom>
+  <efi:forecastProfiles>
+    <efi:electricityProfile>
+      <efi:element efi:duration="PT5S" efi:power="500" />
+      <efi:element efi:duration="PT5S" efi:power="500" />
+    </efi:electricityProfile>
+    <efi:gasProbabilityProfile>
+      <efi:flowRateElement efi:duration="PT5S" efi:the68PPRLower="400"
+        efi:the95PPRLower="400" efi:expected="500" efi:the95PPRUpper="400" efi:the68PPRUpper="400" />
+      <efi:flowRateElement efi:duration="PT5S" efi:the68PPRLower="400"
+        efi:the95PPRLower="400" efi:expected="500" efi:the95PPRUpper="400" efi:the68PPRUpper="400" />
+    </efi:gasProbabilityProfile>
+    <efi:heatProbabilityProfile>
+      <efi:element efi:duration="PT5S">
+        <efi:temperature efi:the68PPRLower="400" efi:the95PPRLower="400"
+          efi:expected="500" efi:the95PPRUpper="400" efi:the68PPRUpper="400" />
+        <efi:flowRate efi:the68PPRLower="400" efi:the95PPRLower="400" efi:expected="500"
+          efi:the95PPRUpper="400" efi:the68PPRUpper="400" />
+        <efi:thermalPower efi:the68PPRLower="400" efi:the95PPRLower="400"
+          efi:expected="500" efi:the95PPRUpper="400" efi:the68PPRUpper="400" />
+      </efi:element>
+      <efi:element efi:duration="PT5S">
+        <efi:temperature efi:the68PPRLower="400" efi:the95PPRLower="400"
+          efi:expected="500" efi:the95PPRUpper="400" efi:the68PPRUpper="400" />
+        <efi:flowRate efi:the68PPRLower="400" efi:the95PPRLower="400" efi:expected="500"
+          efi:the95PPRUpper="400" efi:the68PPRUpper="400" />
+        <efi:thermalPower efi:the68PPRLower="400" efi:the95PPRLower="400"
+          efi:expected="500" efi:the95PPRUpper="400" efi:the68PPRUpper="400" />
+      </efi:element>
+    </efi:heatProbabilityProfile>
+  </efi:forecastProfiles>
+</efi:InflexibleForecast>

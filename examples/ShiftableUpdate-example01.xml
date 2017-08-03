@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:ShiftableUpdate efi:efiVersion="2.0" xmlns:efi="http://www.flexiblepower.org/efi-2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>idvalue1</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:flexibilityUpdateId>id</efi:flexibilityUpdateId>
+  <efi:validFrom>2001-12-31T12:00:00</efi:validFrom>
+  <efi:endBefore>2001-12-31T12:00:00</efi:endBefore>
+  <efi:sequentialProfiles>
+    <efi:sequentialProfile efi:sequenceNr="0">
+      <efi:maxIntervalBefore>PT0S</efi:maxIntervalBefore>
+      <efi:sequentialProfileAlternatives>
+        <efi:sequentialProfileAlternative efi:alternativeNr="0">
+          <efi:electricityProfile>
+            <efi:element efi:duration="PT5S" efi:power="500" />
+            <efi:element efi:duration="PT5S" efi:power="500" />
+          </efi:electricityProfile>
+        </efi:sequentialProfileAlternative>
+      </efi:sequentialProfileAlternatives>
+    </efi:sequentialProfile>
+    <efi:sequentialProfile efi:sequenceNr="1">
+      <efi:maxIntervalBefore>PT0S</efi:maxIntervalBefore>
+      <efi:sequentialProfileAlternatives>
+        <efi:sequentialProfileAlternative efi:alternativeNr="0">
+          <efi:electricityProfile>
+            <efi:element efi:duration="PT5S" efi:power="500" />
+            <efi:element efi:duration="PT5S" efi:power="500" />
+          </efi:electricityProfile>
+        </efi:sequentialProfileAlternative>
+      </efi:sequentialProfileAlternatives>
+    </efi:sequentialProfile>
+  </efi:sequentialProfiles>
+</efi:ShiftableUpdate>

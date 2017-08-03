@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:StorageUsageForecastUpdate efi:efiVersion="2.0"
+  xmlns:efi="http://www.flexiblepower.org/efi-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>idvalue1</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:flexibilityUpdateId>id</efi:flexibilityUpdateId>
+  <efi:validFrom>2001-12-31T12:00:00</efi:validFrom>
+  <efi:storageUsageForecast>
+    <efi:storageUsageProbabilityProfile>
+      <efi:usageElement efi:duration="PT5S" efi:the68PPRLower="400"
+        efi:the95PPRLower="400" efi:expected="500" efi:the95PPRUpper="400" efi:the68PPRUpper="400" />
+      <efi:usageElement efi:duration="PT5S" efi:the68PPRLower="400"
+        efi:the95PPRLower="400" efi:expected="500" efi:the95PPRUpper="400" efi:the68PPRUpper="400" />
+    </efi:storageUsageProbabilityProfile>
+  </efi:storageUsageForecast>
+</efi:StorageUsageForecastUpdate>

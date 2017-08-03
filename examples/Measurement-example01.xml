@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:Measurement efi:efiVersion="2.0" xmlns:efi="http://www.flexiblepower.org/efi-2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>efi:efiResourceId</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:mesaurementTimestamp>2001-12-31T12:00:00</efi:mesaurementTimestamp>
+  <efi:electricityMesaurement efi:power="501" />
+  <efi:gasMesaurement efi:flowRate="501" />
+  <efi:heatMesaurement efi:temperature="501" efi:flowRate="20" efi:thermalPower="100" />
+</efi:Measurement>

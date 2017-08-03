@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:StorageRegistration efi:efiVersion="2.0" xmlns:efi="http://www.flexiblepower.org/efi-2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>storage-device-001</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:instructionProcessingDelay>PT0S</efi:instructionProcessingDelay>
+  <efi:deviceDescription>
+    <efi:deviceClass>Heatpump</efi:deviceClass>
+    <efi:serialNumber>efi:serialNumber</efi:serialNumber>
+    <efi:label>efi:label</efi:label>
+  </efi:deviceDescription>
+  <efi:currency>EUR</efi:currency>
+  <efi:fillLevelLabel>Temperature</efi:fillLevelLabel>
+  <efi:fillLevelUnit>Degrees Celsius</efi:fillLevelUnit>
+  <efi:actuators>
+    <efi:actuator efi:id="0" efi:label="Burner">
+      <efi:supportedCommodity>GAS</efi:supportedCommodity>
+      <efi:supportedCommodity>ELECTRICITY</efi:supportedCommodity>
+    </efi:actuator>
+  </efi:actuators>
+</efi:StorageRegistration>

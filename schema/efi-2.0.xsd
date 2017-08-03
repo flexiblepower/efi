@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:efi="http://www.flexiblepower.org/efi-2"
+  targetNamespace="http://www.flexiblepower.org/efi-2" elementFormDefault="qualified"
+  attributeFormDefault="qualified">
+  <complexType name="EfiMessage" abstract="true">
+    <sequence>
+      <element name="header">
+        <complexType>
+          <sequence>
+            <element name="efiResourceId" type="efi:Identifier" />
+            <element name="timestamp" type="dateTime" />
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+    <attribute name="efiVersion" type="string" use="required" fixed="2.0" />
+  </complexType>
+  <complexType name="DeviceDescription">
+    <sequence>
+      <element name="deviceClass" type="efi:DeviceClass" minOccurs="1" maxOccurs="1" />
+      <element name="serialNumber" type="string" minOccurs="0" maxOccurs="1" />
+      <element name="label" type="string" minOccurs="0" maxOccurs="1" />
+    </sequence>
+  </complexType>
+  <complexType name="FlexibilityRegistration">
+    <complexContent>
+      <extension base="efi:EfiMessage">
+        <sequence>
+          <element name="instructionProcessingDelay" type="duration" minOccurs="1"
+            maxOccurs="1" />
+          <element name="deviceDescription" type="efi:DeviceDescription" minOccurs="1"
+            maxOccurs="1" />
+          <element name="currency" type="efi:CurrencyType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="FlexibilityUpdate" abstract="true">
+    <complexContent>
+      <extension base="efi:EfiMessage">
+        <sequence>
+          <element name="flexibilityUpdateId" type="efi:Identifier" />
+          <element name="validFrom" type="dateTime" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="Instruction" abstract="true">
+    <complexContent>
+      <extension base="efi:EfiMessage">
+        <sequence>
+          <element name="instructionId" type="efi:Identifier" />
+          <element name="flexibilityUpdateId" type="efi:Identifier" />
+          <element name="isEmergencyInstruction" type="boolean" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <element name="InstructionStatusUpdate">
+    <complexType>
+      <complexContent>
+        <extension base="efi:EfiMessage">
+          <sequence>
+            <element name="instructionId" type="efi:Identifier" />
+            <element name="status" type="efi:InstructionStatus" />
+            <element name="debugInformation" type="string" minOccurs="0" maxOccurs="1" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <simpleType name="InstructionStatus">
+    <restriction base="string">
+      <enumeration value="ACCEPTED" />
+      <enumeration value="STARTED" />
+      <enumeration value="SUCCEEDED" />
+      <enumeration value="REJECTED" />
+      <enumeration value="ABORTED" />
+    </restriction>
+  </simpleType>
+  <element name="FlexibilityRevoke">
+    <complexType>
+      <complexContent>
+        <extension base="efi:EfiMessage" />
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InstructionRevoke">
+    <complexType>
+      <complexContent>
+        <extension base="efi:EfiMessage">
+          <sequence>
+            <element name="instructionId" type="efi:Identifier" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <simpleType name="CommodityEnum">
+    <restriction base="string">
+      <enumeration value="ELECTRICITY" />
+      <enumeration value="GAS" />
+      <enumeration value="HEAT" />
+    </restriction>
+  </simpleType>
+  <simpleType name="CurtailmentQuantity">
+    <restriction base="string">
+      <enumeration value="ELECTRICITY.POWER" />
+      <enumeration value="GAS.FLOWRATE" />
+      <enumeration value="HEAT.TEMPERATURE" />
+      <enumeration value="HEAT.FLOWRATE" />
+      <enumeration value="HEAT.THERMALPOWER" />
+    </restriction>
+  </simpleType>
+  <complexType name="ProbabilityAttributes">
+    <attribute name="the68PPRLower" type="double" use="required" />
+    <attribute name="the95PPRLower" type="double" use="required" />
+    <attribute name="expected" type="double" use="required" />
+    <attribute name="the95PPRUpper" type="double" use="required" />
+    <attribute name="the68PPRUpper" type="double" use="required" />
+  </complexType>
+  <complexType name="ProbabilityAttributesWithDuration">
+    <complexContent>
+      <extension base="efi:ProbabilityAttributes">
+        <attribute name="duration" type="duration" use="required" />
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="StorageUsageProfile">
+    <sequence>
+      <element name="element" minOccurs="1" maxOccurs="unbounded">
+        <complexType>
+          <attribute name="duration" type="duration" use="required" />
+          <attribute name="usage" type="double" use="required" />
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="StorageUsageProbabilityProfile">
+    <sequence>
+      <element name="usageElement" minOccurs="1" maxOccurs="unbounded"
+        type="efi:ProbabilityAttributesWithDuration" />
+    </sequence>
+  </complexType>
+  <complexType name="ElectricityProfile">
+    <sequence>
+      <element name="element" minOccurs="1" maxOccurs="unbounded">
+        <complexType>
+          <attribute name="duration" type="duration" use="required" />
+          <attribute name="power" type="double" use="required" />
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ElectricityProbabilityProfile">
+    <sequence>
+      <element name="powerElement" minOccurs="1" maxOccurs="unbounded"
+        type="efi:ProbabilityAttributesWithDuration" />
+    </sequence>
+  </complexType>
+  <complexType name="GasProfile">
+    <sequence>
+      <element name="element" minOccurs="1" maxOccurs="unbounded">
+        <complexType>
+          <attribute name="duration" type="duration" use="required" />
+          <attribute name="flowRate" type="double" use="required" />
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="GasProbabilityProfile">
+    <sequence>
+      <element name="flowRateElement" minOccurs="1" maxOccurs="unbounded"
+        type="efi:ProbabilityAttributesWithDuration" />
+    </sequence>
+  </complexType>
+  <complexType name="HeatProfile">
+    <sequence>
+      <element name="element" minOccurs="1" maxOccurs="unbounded">
+        <complexType>
+          <attribute name="duration" type="duration" use="required" />
+          <attribute name="temperature" type="double" use="optional" />
+          <attribute name="flowRate" type="double" use="optional" />
+          <attribute name="thermalPower" type="double" use="optional" />
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="HeatProbabilityProfile">
+    <sequence>
+      <element name="element" minOccurs="1" maxOccurs="unbounded">
+        <complexType>
+          <sequence>
+            <element name="temperature" minOccurs="0" maxOccurs="1" type="efi:ProbabilityAttributes" />
+            <element name="flowRate" minOccurs="0" maxOccurs="1" type="efi:ProbabilityAttributes" />
+            <element name="thermalPower" minOccurs="0" maxOccurs="1" type="efi:ProbabilityAttributes" />
+          </sequence>
+          <attribute name="duration" type="duration" use="required" />
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <element name="InflexibleRegistration">
+    <complexType>
+      <complexContent>
+        <extension base="efi:FlexibilityRegistration">
+          <sequence>
+            <element name="supportedCommodities" type="efi:SupportedCommodities" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <complexType name="SupportedCommodities">
+    <sequence>
+      <element name="commodityType" type="efi:CommodityEnum" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <complexType name="CurtailmentOptions">
+    <sequence>
+      <element name="curtailmentOption" type="efi:CurtailmentOption" minOccurs="0"
+        maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <complexType name="CurtailmentOption">
+    <sequence>
+      <element name="curtailmentRange" type="efi:CurtailmentRange" minOccurs="1" maxOccurs="unbounded" />
+    </sequence>
+    <attribute name="curtailmentQuantity" type="efi:CurtailmentQuantity" use="required" />
+    <attribute name="minimalCurtailmentDuration" type="duration" use="optional" default="PT0S" />
+  </complexType>
+  <complexType name="CurtailmentRange">
+    <attribute name="lowerBound" type="double" use="required" />
+    <attribute name="upperBound" type="double" use="required" />
+  </complexType>
+  <complexType name="InflexibleUpdate">
+    <complexContent>
+      <extension base="efi:FlexibilityUpdate" />
+    </complexContent>
+  </complexType>
+  <element name="Measurement">
+    <complexType>
+      <complexContent>
+        <extension base="efi:EfiMessage">
+          <sequence>
+            <element name="measurementTimestamp" type="dateTime" />
+            <element name="electricityMeasurement" minOccurs="0" maxOccurs="1">
+              <complexType>
+                <attribute name="power" type="double" use="required" />
+              </complexType>
+            </element>
+            <element name="gasMeasurement" minOccurs="0" maxOccurs="1">
+              <complexType>
+                <attribute name="flowRate" type="double" use="required" />
+              </complexType>
+            </element>
+            <element name="heatMeasurement" minOccurs="0" maxOccurs="1">
+              <complexType>
+                <attribute name="temperature" type="double" use="optional" />
+                <attribute name="flowRate" type="double" use="optional" />
+                <attribute name="thermalPower" type="double" use="optional" />
+              </complexType>
+            </element>
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InflexibleForecast" abstract="true">
+    <complexType>
+      <complexContent>
+        <extension base="efi:InflexibleUpdate">
+          <sequence>
+            <element name="forecastProfiles" type="efi:ProfileContainer" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <complexType name="ProfileContainer">
+    <sequence>
+      <choice minOccurs="0" maxOccurs="1">
+        <element name="electricityProfile" type="efi:ElectricityProfile" />
+        <element name="electricityProbabilityProfile" type="efi:ElectricityProbabilityProfile" />
+      </choice>
+      <choice minOccurs="0" maxOccurs="1">
+        <element name="gasProfile" type="efi:GasProfile" />
+        <element name="gasProbabilityProfile" type="efi:GasProbabilityProfile" />
+      </choice>
+      <choice minOccurs="0" maxOccurs="1">
+        <element name="heatProfile" type="efi:HeatProfile" />
+        <element name="heatProbabilityProfile" type="efi:HeatProbabilityProfile" />
+      </choice>
+    </sequence>
+  </complexType>
+  <element name="InflexibleCurtailmentOptions">
+    <complexType>
+      <complexContent>
+        <extension base="efi:InflexibleUpdate">
+          <sequence>
+            <element name="curtailmentOptions" type="efi:CurtailmentOptions" minOccurs="0" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="InflexibleInstruction">
+    <complexType>
+      <complexContent>
+        <extension base="efi:Instruction">
+          <sequence>
+            <element name="curtailmentProfile" type="efi:CurtailmentProfile" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <complexType name="CurtailmentProfile">
+    <sequence>
+      <element name="curtailmentProfileElement" type="efi:CurtailmentProfileElement"
+        minOccurs="1" maxOccurs="unbounded" />
+    </sequence>
+    <attribute name="curtailmentQuantity" type="efi:CurtailmentQuantity" use="required" />
+    <attribute name="startTime" type="dateTime" use="required" />
+  </complexType>
+  <complexType name="CurtailmentProfileElement">
+    <attribute name="duration" type="duration" use="required" />
+    <attribute name="value" type="double" use="required" />
+  </complexType>
+  <element name="ShiftableRegistration">
+    <complexType>
+      <complexContent>
+        <extension base="efi:FlexibilityRegistration">
+          <sequence>
+            <element name="supportedCommodities" type="efi:SupportedCommodities" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <complexType name="SequentialProfile">
+    <sequence>
+      <element name="maxIntervalBefore" type="duration" />
+      <element name="sequentialProfileAlternatives" type="efi:SequentialProfileAlternatives"
+        minOccurs="1" maxOccurs="unbounded" />
+    </sequence>
+    <attribute name="sequenceNr" type="int" use="required" />
+  </complexType>
+  <complexType name="SequentialProfileAlternative">
+    <complexContent>
+      <extension base="efi:ProfileContainer">
+        <attribute name="alternativeNr" type="int" use="required" />
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SequentialProfileAlternatives">
+    <sequence>
+      <element name="sequentialProfileAlternative" type="efi:SequentialProfileAlternative" />
+    </sequence>
+  </complexType>
+  <complexType name="SequentialProfiles">
+    <sequence>
+      <element name="sequentialProfile" type="efi:SequentialProfile" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <element name="ShiftableUpdate">
+    <complexType>
+      <complexContent>
+        <extension base="efi:FlexibilityUpdate">
+          <sequence>
+            <element name="endBefore" type="dateTime" />
+            <element name="sequentialProfiles" type="efi:SequentialProfiles" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <complexType name="SequentialProfileInstruction">
+    <sequence>
+      <element name="sequenceNr" type="int" />
+      <element name="alternativeNr" type="int" />
+      <element name="startTime" type="dateTime" />
+    </sequence>
+  </complexType>
+  <complexType name="SequentialProfileInstructions">
+    <sequence>
+      <element name="sequentialProfileInstruction" type="efi:SequentialProfileInstruction"
+        maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <element name="ShiftableInstruction">
+    <complexType>
+      <complexContent>
+        <extension base="efi:Instruction">
+          <sequence>
+            <element name="sequentialProfileInstructions" type="efi:SequentialProfileInstructions"
+              minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="StorageRegistration">
+    <complexType>
+      <complexContent>
+        <extension base="efi:FlexibilityRegistration">
+          <sequence>
+            <element name="fillLevelLabel" type="string" />
+            <element name="fillLevelUnit" type="string" />
+            <element name="actuators" type="efi:Actuators" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <complexType name="Actuator">
+    <sequence>
+      <element name="supportedCommodity" type="efi:CommodityEnum" maxOccurs="unbounded" />
+    </sequence>
+    <attribute name="id" type="int" use="required" />
+    <attribute name="label" type="string" use="optional" />
+  </complexType>
+  <complexType name="Actuators">
+    <sequence>
+      <element name="actuator" type="efi:Actuator" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <complexType name="Timer">
+    <attribute name="id" type="int" use="required" />
+    <attribute name="label" type="string" use="required" />
+    <attribute name="duration" type="duration" default="PT0S" />
+  </complexType>
+  <complexType name="Timers">
+    <sequence>
+      <element name="timer" type="efi:Timer" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <complexType name="Transitions">
+    <sequence>
+      <element name="transition" type="efi:Transition" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <complexType name="TimerReferences">
+    <sequence>
+      <element name="timerReference" minOccurs="1" maxOccurs="unbounded">
+        <complexType>
+          <attribute name="timerId" type="int" use="required" />
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="Transition">
+    <sequence>
+      <element name="startTimers" type="efi:TimerReferences" minOccurs="0" maxOccurs="1" />
+      <element name="blockingTimers" type="efi:TimerReferences" minOccurs="0" maxOccurs="1" />
+    </sequence>
+    <attribute name="fromRunningModeId" type="int" use="required" />
+    <attribute name="toRunningModeId" type="int" use="required" />
+    <attribute name="transitionCost" type="double" />
+    <attribute name="transitionTime" type="duration" use="optional" />
+  </complexType>
+  <simpleType name="CurrencyType">
+    <restriction base="string">
+      <enumeration value="AED" />
+      <enumeration value="ANG" />
+      <enumeration value="AUD" />
+      <enumeration value="CHE" />
+      <enumeration value="CHF" />
+      <enumeration value="CHW" />
+      <enumeration value="EUR" />
+      <enumeration value="GBP" />
+      <enumeration value="LBP" />
+      <enumeration value="LKR" />
+      <enumeration value="LRD" />
+      <enumeration value="LSL" />
+      <enumeration value="LYD" />
+      <enumeration value="MAD" />
+      <enumeration value="MDL" />
+      <enumeration value="MGA" />
+      <enumeration value="MKD" />
+      <enumeration value="MMK" />
+      <enumeration value="MNT" />
+      <enumeration value="MOP" />
+      <enumeration value="MRO" />
+      <enumeration value="MUR" />
+      <enumeration value="MVR" />
+      <enumeration value="MWK" />
+      <enumeration value="MXN" />
+      <enumeration value="MXV" />
+      <enumeration value="MYR" />
+      <enumeration value="MZN" />
+      <enumeration value="NAD" />
+      <enumeration value="NGN" />
+      <enumeration value="NIO" />
+      <enumeration value="NOK" />
+      <enumeration value="NPR" />
+      <enumeration value="NZD" />
+      <enumeration value="OMR" />
+      <enumeration value="PAB" />
+      <enumeration value="PEN" />
+      <enumeration value="PGK" />
+      <enumeration value="PHP" />
+      <enumeration value="PKR" />
+      <enumeration value="PLN" />
+      <enumeration value="PYG" />
+      <enumeration value="QAR" />
+      <enumeration value="RON" />
+      <enumeration value="RSD" />
+      <enumeration value="RUB" />
+      <enumeration value="RWF" />
+      <enumeration value="SAR" />
+      <enumeration value="SBD" />
+      <enumeration value="SCR" />
+      <enumeration value="SDG" />
+      <enumeration value="SEK" />
+      <enumeration value="SGD" />
+      <enumeration value="SHP" />
+      <enumeration value="SLL" />
+      <enumeration value="SOS" />
+      <enumeration value="SRD" />
+      <enumeration value="SSP" />
+      <enumeration value="STD" />
+      <enumeration value="SYP" />
+      <enumeration value="SZL" />
+      <enumeration value="THB" />
+      <enumeration value="TJS" />
+      <enumeration value="TMT" />
+      <enumeration value="TND" />
+      <enumeration value="TOP" />
+      <enumeration value="TRY" />
+      <enumeration value="TTD" />
+      <enumeration value="TWD" />
+      <enumeration value="TZS" />
+      <enumeration value="UAH" />
+      <enumeration value="UGX" />
+      <enumeration value="USD" />
+      <enumeration value="USN" />
+      <enumeration value="UYI" />
+      <enumeration value="UYU" />
+      <enumeration value="UZS" />
+      <enumeration value="VEF" />
+      <enumeration value="VND" />
+      <enumeration value="VUV" />
+      <enumeration value="WST" />
+      <enumeration value="XAG" />
+      <enumeration value="XAU" />
+      <enumeration value="XBA" />
+      <enumeration value="XBB" />
+      <enumeration value="XBC" />
+      <enumeration value="XBD" />
+      <enumeration value="XCD" />
+      <enumeration value="XOF" />
+      <enumeration value="XPD" />
+      <enumeration value="XPF" />
+      <enumeration value="XPT" />
+      <enumeration value="XSU" />
+      <enumeration value="XTS" />
+      <enumeration value="XUA" />
+      <enumeration value="XXX" />
+      <enumeration value="YER" />
+      <enumeration value="ZAR" />
+      <enumeration value="ZMW" />
+      <enumeration value="ZWL" />
+    </restriction>
+  </simpleType>
+  <complexType name="RunningMode" abstract="true">
+    <attribute name="id" type="int" use="required" />
+    <attribute name="label" type="string" use="required" />
+  </complexType>
+  <complexType name="StorageRunningModeElement" abstract="true">
+    <attribute name="fillLevelLowerBound" type="double" use="required" />
+    <attribute name="fillLevelUpperBound" type="double" use="required" />
+  </complexType>
+  <complexType name="StorageDiscreteRunningMode">
+    <complexContent>
+      <extension base="efi:RunningMode">
+        <sequence>
+          <element name="discreteRunningModeElement" minOccurs="1" maxOccurs="unbounded">
+            <complexType>
+              <complexContent>
+                <extension base="efi:StorageRunningModeElement">
+                  <sequence>
+                    <element name="fillingRate" type="double" minOccurs="1" maxOccurs="1" />
+                    <element name="runningCost" type="decimal" minOccurs="0" maxOccurs="1" />
+                    <element name="electricityPower" type="double" minOccurs="0" maxOccurs="1" />
+                    <element name="gasFlawRate" type="double" minOccurs="0" maxOccurs="1" />
+                    <element name="heatTemperature" type="double" minOccurs="0" maxOccurs="1" />
+                    <element name="heatFlowRate" type="double" minOccurs="0" maxOccurs="1" />
+                    <element name="heatThermalPower" type="double" minOccurs="0" maxOccurs="1" />
+                  </sequence>
+                </extension>
+              </complexContent>
+            </complexType>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="StorageContinuousRunningModeData" abstract="true">
+    <sequence>
+      <element name="fillingRate" type="double" minOccurs="1" />
+      <element name="runningCost" type="decimal" minOccurs="0" />
+      <element name="electricityPower" type="double" minOccurs="0" maxOccurs="1" />
+      <element name="gasFlawRate" type="double" minOccurs="0" maxOccurs="1" />
+      <element name="heatTemperature" type="double" minOccurs="0" maxOccurs="1" />
+      <element name="heatFlowRate" type="double" minOccurs="0" maxOccurs="1" />
+      <element name="heatThermalPower" type="double" minOccurs="0" maxOccurs="1" />
+    </sequence>
+  </complexType>
+  <complexType name="StorageContinuousRunningMode">
+    <complexContent>
+      <extension base="efi:RunningMode">
+        <sequence>
+          <element name="continuousRunningModeElement" minOccurs="1" maxOccurs="unbounded">
+            <complexType>
+              <complexContent>
+                <extension base="efi:StorageRunningModeElement">
+                  <sequence>
+                    <element name="lowerBound">
+                      <complexType>
+                        <complexContent>
+                          <extension base="efi:StorageContinuousRunningModeData" />
+                        </complexContent>
+                      </complexType>
+                    </element>
+                    <element name="upperBound">
+                      <complexType>
+                        <complexContent>
+                          <extension base="efi:StorageContinuousRunningModeData" />
+                        </complexContent>
+                      </complexType>
+                    </element>
+                  </sequence>
+                </extension>
+              </complexContent>
+            </complexType>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="StorageRunningModes">
+    <sequence>
+      <choice minOccurs="1" maxOccurs="unbounded">
+        <element name="discreteRunningMode" type="efi:StorageDiscreteRunningMode" />
+        <element name="continuousRunningMode" type="efi:StorageContinuousRunningMode" />
+      </choice>
+    </sequence>
+  </complexType>
+  <complexType name="ActuatorBehaviour">
+    <sequence>
+      <element name="runningModes" type="efi:StorageRunningModes" />
+      <element name="timers" type="efi:Timers" minOccurs="0" maxOccurs="1" />
+      <element name="transitions" type="efi:Transitions" minOccurs="0" maxOccurs="1" />
+    </sequence>
+    <attribute name="actuatorId" type="string" use="required" />
+  </complexType>
+  <complexType name="LeakageElement">
+    <attribute name="fillLevelLowerBound" type="double" use="required" />
+    <attribute name="fillLevelUpperBound" type="double" use="required" />
+    <attribute name="leakageRate" type="double" use="required" />
+  </complexType>
+  <complexType name="LeakageFunction">
+    <sequence>
+      <element name="leakageElement" type="efi:LeakageElement" minOccurs="1" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <complexType name="ActuatorBehaviours">
+    <sequence>
+      <element name="actuatorBehaviour" type="efi:ActuatorBehaviour" minOccurs="1"
+        maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <element name="StorageSystemDescription">
+    <complexType>
+      <complexContent>
+        <extension base="efi:StorageUpdate">
+          <sequence>
+            <element name="actuatorBehaviours" type="efi:ActuatorBehaviours" minOccurs="0"
+              maxOccurs="1" />
+            <element name="leakageBehaviour" type="efi:LeakageFunction" minOccurs="0"
+              maxOccurs="1" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <complexType name="StorageUpdate" abstract="true">
+    <complexContent>
+      <extension base="efi:FlexibilityUpdate" />
+    </complexContent>
+  </complexType>
+  <complexType name="TimerUpdate">
+    <sequence>
+      <element name="finishedAt" type="dateTime" />
+    </sequence>
+    <attribute name="timerId" type="int" use="required" />
+  </complexType>
+  <complexType name="TimerUpdates">
+    <sequence>
+      <element name="timerUpdate" type="efi:TimerUpdate" minOccurs="0" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <complexType name="ActuatorUpdate">
+    <sequence>
+      <element name="currentRunningMode" type="int" />
+      <element name="timerUpdates" type="efi:TimerUpdates" minOccurs="0" />
+    </sequence>
+    <attribute name="actuatorId" type="int" use="required" />
+  </complexType>
+  <complexType name="ActuatorUpdates">
+    <sequence>
+      <element name="actuatorUpdate" type="efi:ActuatorUpdate" minOccurs="1" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <element name="StorageStateUpdate">
+    <complexType>
+      <complexContent>
+        <extension base="efi:StorageUpdate">
+          <sequence>
+            <element name="currentFillLevel" type="double" />
+            <element name="actuatorUpdates" type="efi:ActuatorUpdates" minOccurs="0" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <complexType name="TargetProfile">
+    <sequence>
+      <element name="element" maxOccurs="unbounded">
+        <complexType>
+          <attribute name="duration" type="duration" use="required" />
+          <attribute name="fillLevelLowerBound" type="double" use="required" />
+          <attribute name="fillLevelUpperBound" type="double" use="required" />
+        </complexType>
+      </element>
+    </sequence>
+    <attribute name="startTime" type="dateTime" />
+  </complexType>
+  <element name="StorageTargetProfileUpdate">
+    <complexType>
+      <complexContent>
+        <extension base="efi:StorageUpdate">
+          <sequence>
+            <element name="targetProfile" type="efi:TargetProfile" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="StorageUsageForecastUpdate">
+    <complexType>
+      <complexContent>
+        <extension base="efi:StorageUpdate">
+          <sequence>
+            <element name="storageUsageForecast">
+              <complexType>
+                <choice>
+                  <element name="storageUsageProfile" type="efi:StorageUsageProfile" />
+                  <element name="storageUsageProbabilityProfile" type="efi:StorageUsageProbabilityProfile" />
+                </choice>
+              </complexType>
+            </element>
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <complexType name="ActuatorInstruction">
+    <sequence>
+      <element name="runningModeId" type="int" />
+      <element name="runningModeFactor" minOccurs="0" maxOccurs="1">
+        <simpleType>
+          <restriction base="double">
+            <minInclusive value="0.0" />
+            <maxInclusive value="1.0" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="startTime" type="dateTime" />
+    </sequence>
+    <attribute name="actuatorId" type="int" use="required" />
+  </complexType>
+  <complexType name="ActuatorInstructions">
+    <sequence>
+      <element name="actuatorInstruction" type="efi:ActuatorInstruction" minOccurs="1"
+        maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+  <element name="StorageInstruction">
+    <complexType>
+      <complexContent>
+        <extension base="efi:Instruction">
+          <sequence>
+            <element name="actuatorInstructions" type="efi:ActuatorInstructions" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="AdjustableRegistration">
+    <complexType>
+      <complexContent>
+        <extension base="efi:FlexibilityRegistration">
+          <sequence>
+            <element name="supportedCommodities" type="efi:SupportedCommodities" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <complexType name="AdjustableDiscreteRunningMode">
+    <complexContent>
+      <extension base="efi:RunningMode">
+        <sequence>
+          <element name="runningCost" type="decimal" minOccurs="0" maxOccurs="1" />
+          <element name="electricityConsumption" type="double" minOccurs="0" maxOccurs="1" />
+          <element name="gasConsumption" type="double" minOccurs="0" maxOccurs="1" />
+          <element name="heatConsumption" type="double" minOccurs="0" maxOccurs="1" />
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AdjustableContinuousRunningModeData" abstract="true">
+    <sequence>
+      <element name="runningCost" type="decimal" minOccurs="0" />
+      <element name="electricityConsumption" type="double" minOccurs="0" />
+      <element name="gasConsumption" type="double" minOccurs="0" />
+      <element name="heatConsumption" type="double" minOccurs="0" />
+    </sequence>
+  </complexType>
+  <complexType name="AdjustableContinuousRunningMode">
+    <complexContent>
+      <extension base="efi:RunningMode">
+        <sequence>
+          <element name="lowerBound">
+            <complexType>
+              <complexContent>
+                <extension base="efi:AdjustableContinuousRunningModeData" />
+              </complexContent>
+            </complexType>
+          </element>
+          <element name="upperBound">
+            <complexType>
+              <complexContent>
+                <extension base="efi:AdjustableContinuousRunningModeData" />
+              </complexContent>
+            </complexType>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AdjustableRunningModes">
+    <sequence>
+      <choice minOccurs="1" maxOccurs="unbounded">
+        <element name="discreteRunningMode" type="efi:AdjustableDiscreteRunningMode" />
+        <element name="continuousRunningMode" type="efi:AdjustableContinuousRunningMode" />
+      </choice>
+    </sequence>
+  </complexType>
+  <element name="AdjustableSystemDescription">
+    <complexType>
+      <complexContent>
+        <extension base="efi:AdjustableUpdate">
+          <sequence>
+            <element name="runningModes" type="efi:AdjustableRunningModes" />
+            <element name="timers" type="efi:Timers" minOccurs="0" maxOccurs="1" />
+            <element name="transitions" type="efi:Transitions" minOccurs="0" maxOccurs="1" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <complexType name="AdjustableUpdate">
+    <complexContent>
+      <extension base="efi:FlexibilityUpdate" />
+    </complexContent>
+  </complexType>
+  <element name="AdjustableStateUpdate">
+    <complexType>
+      <complexContent>
+        <extension base="efi:AdjustableUpdate">
+          <sequence>
+            <element name="currentRunningModeId" type="int" />
+            <element name="timerUpdates" type="efi:TimerUpdates" minOccurs="1" maxOccurs="1" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <element name="AdjustableInstruction">
+    <complexType>
+      <complexContent>
+        <extension base="efi:Instruction">
+          <sequence>
+            <element name="runningModeId" type="int" />
+            <element name="runningModeFactor" minOccurs="0" maxOccurs="1">
+              <simpleType>
+                <restriction base="double">
+                  <minInclusive value="0.0" />
+                  <maxInclusive value="1.0" />
+                </restriction>
+              </simpleType>
+            </element>
+            <element name="startTime" type="dateTime" />
+          </sequence>
+        </extension>
+      </complexContent>
+    </complexType>
+  </element>
+  <simpleType name="DeviceClass">
+    <restriction base="string">
+      <enumeration value="Refrigerator" />
+      <enumeration value="Freezer" />
+      <enumeration value="Water Cooler" />
+      <enumeration value="Water Heater" />
+      <enumeration value="Washing Machine" />
+      <enumeration value="Clothes Dryer" />
+      <enumeration value="Combo Washer Dryer" />
+      <enumeration value="Drying Cabinet" />
+      <enumeration value="Dishwasher" />
+      <enumeration value="Heatpump" />
+      <enumeration value="Micro-CHP" />
+      <enumeration value="Stationary Battery" />
+      <enumeration value="Electrical Vehicle" />
+      <enumeration value="PV Panel" />
+      <enumeration value="Windmill" />
+      <enumeration value="Solar Collector" />
+      <enumeration value="Air Conditioner" />
+      <enumeration value="Ventilation" />
+      <enumeration value="Air Quality Appliance" />
+      <enumeration value="Gas Geater" />
+      <enumeration value="Floor Heating" />
+      <enumeration value="Generator" />
+      <enumeration value="Miscellaneous" />
+    </restriction>
+  </simpleType>
+  <simpleType name="Identifier">
+    <restriction base="string">
+      <pattern value="[a-zA-Z0-9\-_:]{2,64}" />
+    </restriction>
+  </simpleType>
+</schema>

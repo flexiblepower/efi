@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:ShiftableInstruction efi:efiVersion="2.0"
+  xmlns:efi="http://www.flexiblepower.org/efi-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>idvalue1</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:instructionId>bla</efi:instructionId>
+  <efi:flexibilityUpdateId>idvalue2</efi:flexibilityUpdateId>
+  <efi:isEmergencyInstruction>true</efi:isEmergencyInstruction>
+  <efi:sequentialProfileInstructions>
+    <efi:sequentialProfileInstruction>
+      <efi:sequenceNr>0</efi:sequenceNr>
+      <efi:alternativeNr>0</efi:alternativeNr>
+      <efi:startTime>2001-12-31T12:00:00</efi:startTime>
+    </efi:sequentialProfileInstruction>
+  </efi:sequentialProfileInstructions>
+</efi:ShiftableInstruction>

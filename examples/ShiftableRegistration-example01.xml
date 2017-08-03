@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:ShiftableRegistration efi:efiVersion="2.0"
+  xmlns:efi="http://www.flexiblepower.org/efi-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>washingmachine</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:instructionProcessingDelay>PT0S</efi:instructionProcessingDelay>
+  <efi:deviceDescription>
+    <efi:deviceClass>Washing Machine</efi:deviceClass>
+    <efi:serialNumber>00000000</efi:serialNumber>
+    <efi:label>Miele EX3000 type B</efi:label>
+  </efi:deviceDescription>
+  <efi:currency>EUR</efi:currency>
+  <efi:supportedCommodities>
+    <efi:commodityType>ELECTRICITY</efi:commodityType>
+  </efi:supportedCommodities>
+</efi:ShiftableRegistration>

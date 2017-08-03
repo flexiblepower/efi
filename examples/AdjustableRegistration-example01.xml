@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:AdjustableRegistration efi:efiVersion="2.0"
+  xmlns:efi="http://www.flexiblepower.org/efi-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>adjustble-device-001</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:instructionProcessingDelay>PT5S</efi:instructionProcessingDelay>
+  <efi:deviceDescription>
+    <efi:deviceClass>Generator</efi:deviceClass>
+    <efi:serialNumber>00010</efi:serialNumber>
+  </efi:deviceDescription>
+  <efi:currency>EUR</efi:currency>
+  <efi:supportedCommodities>
+    <efi:commodityType>ELECTRICITY</efi:commodityType>
+  </efi:supportedCommodities>
+</efi:AdjustableRegistration>

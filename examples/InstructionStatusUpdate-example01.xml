@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:InstructionStatusUpdate efi:efiVersion="2.0"
+  xmlns:efi="http://www.flexiblepower.org/efi-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>device-001</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:instructionId>idvalue2</efi:instructionId>
+  <efi:status>ACCEPTED</efi:status>
+  <efi:debugInformation>That went well!</efi:debugInformation>
+</efi:InstructionStatusUpdate>

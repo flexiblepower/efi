@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:AdjustableInstruction efi:efiVersion="2.0"
+  xmlns:efi="http://www.flexiblepower.org/efi-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>adjustble-device-001</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:instructionId>instruction-001</efi:instructionId>
+  <efi:flexibilityUpdateId>update-012</efi:flexibilityUpdateId>
+  <efi:isEmergencyInstruction>true</efi:isEmergencyInstruction>
+  <efi:runningModeId>0</efi:runningModeId>
+  <efi:startTime>2001-12-31T12:00:00</efi:startTime>
+</efi:AdjustableInstruction>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<efi:InflexibleCurtailmentOptions efi:efiVersion="2.0"
+  xmlns:efi="http://www.flexiblepower.org/efi-2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.flexiblepower.org/efi-2 ../schema/efi-2.0.xsd ">
+  <efi:header>
+    <efi:efiResourceId>inflexible-device-001</efi:efiResourceId>
+    <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
+  </efi:header>
+  <efi:flexibilityUpdateId>message032</efi:flexibilityUpdateId>
+  <efi:validFrom>2001-12-31T12:00:00</efi:validFrom>
+  <efi:curtailmentOptions>
+    <efi:curtailmentOption efi:curtailmentQuantity="ELECTRICITY.POWER"
+      efi:minimalCurtailmentDuration="PT0S">
+      <efi:curtailmentRange efi:lowerBound="0.0" efi:upperBound="2000.0" />
+      <efi:curtailmentRange efi:lowerBound="5000.0" efi:upperBound="10000.0" />
+    </efi:curtailmentOption>
+    <efi:curtailmentOption efi:curtailmentQuantity="GAS.FLOWRATE"
+      efi:minimalCurtailmentDuration="PT0S">
+      <efi:curtailmentRange efi:lowerBound="0.0" efi:upperBound="0.0" />
+    </efi:curtailmentOption>
+  </efi:curtailmentOptions>
+</efi:InflexibleCurtailmentOptions>
