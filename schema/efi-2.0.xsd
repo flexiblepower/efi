@@ -350,7 +350,7 @@
 	<complexType name="SequentialProfile">
 		<sequence>
 			<element name="maxIntervalBefore" type="duration"/>
-			<element name="sequentialProfileAlternatives" type="efi:SequentialProfileAlternatives" minOccurs="1" maxOccurs="unbounded"/>
+			<element name="sequentialProfileAlternatives" type="efi:SequentialProfileAlternatives"/>
 		</sequence>
 		<attribute name="sequenceNr" type="int" use="required"/>
 	</complexType>
@@ -363,7 +363,7 @@
 	</complexType>
 	<complexType name="SequentialProfileAlternatives">
 		<sequence>
-			<element name="sequentialProfileAlternative" type="efi:SequentialProfileAlternative"/>
+			<element name="sequentialProfileAlternative" type="efi:SequentialProfileAlternative" minOccurs="1" maxOccurs="unbounded"/>
 		</sequence>
 	</complexType>
 	<complexType name="SequentialProfiles">
