@@ -589,7 +589,7 @@
 										<element name="fillingRate" type="double" minOccurs="1" maxOccurs="1"/>
 										<element name="runningCost" type="decimal" minOccurs="0" maxOccurs="1"/>
 										<element name="electricityPower" type="double" minOccurs="0" maxOccurs="1"/>
-										<element name="gasFlawRate" type="double" minOccurs="0" maxOccurs="1"/>
+										<element name="gasFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
 										<element name="heatTemperature" type="double" minOccurs="0" maxOccurs="1"/>
 										<element name="heatFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
 										<element name="heatThermalPower" type="double" minOccurs="0" maxOccurs="1"/>
@@ -607,7 +607,7 @@
 			<element name="fillingRate" type="double" minOccurs="1"/>
 			<element name="runningCost" type="decimal" minOccurs="0"/>
 			<element name="electricityPower" type="double" minOccurs="0" maxOccurs="1"/>
-			<element name="gasFlawRate" type="double" minOccurs="0" maxOccurs="1"/>
+			<element name="gasFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
 			<element name="heatTemperature" type="double" minOccurs="0" maxOccurs="1"/>
 			<element name="heatFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
 			<element name="heatThermalPower" type="double" minOccurs="0" maxOccurs="1"/>
