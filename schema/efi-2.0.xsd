@@ -659,7 +659,7 @@
 			<element name="timers" type="efi:Timers" minOccurs="0" maxOccurs="1"/>
 			<element name="transitions" type="efi:Transitions" minOccurs="0" maxOccurs="1"/>
 		</sequence>
-		<attribute name="actuatorId" type="string" use="required"/>
+		<attribute name="actuatorId" type="int" use="required"/>
 	</complexType>
 	<complexType name="LeakageElement">
 		<attribute name="fillLevelLowerBound" type="double" use="required"/>
