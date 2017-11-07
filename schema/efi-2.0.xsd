@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Information Services (TNO Corporate Staforganen) -->
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
   or more contributor license agreements.  See the NOTICE file
@@ -145,14 +146,14 @@
 			<element name="element" minOccurs="1" maxOccurs="unbounded">
 				<complexType>
 					<attribute name="duration" type="duration" use="required"/>
-					<attribute name="usage" type="double" use="required"/>
+					<attribute name="usageRate" type="double" use="required"/>
 				</complexType>
 			</element>
 		</sequence>
 	</complexType>
 	<complexType name="StorageUsageProbabilityProfile">
 		<sequence>
-			<element name="usageElement" type="efi:ProbabilityAttributesWithDuration" minOccurs="1" maxOccurs="unbounded"/>
+			<element name="usageRateElement" type="efi:ProbabilityAttributesWithDuration" minOccurs="1" maxOccurs="unbounded"/>
 		</sequence>
 	</complexType>
 	<complexType name="ElectricityProfile">
@@ -434,7 +435,7 @@
 	<complexType name="Timer">
 		<attribute name="id" type="int" use="required"/>
 		<attribute name="label" type="string" use="required"/>
-		<attribute name="duration" type="duration" default="PT0S"/>
+		<attribute name="duration" type="duration" use="required"/>
 	</complexType>
 	<complexType name="Timers">
 		<sequence>
@@ -463,7 +464,7 @@
 		<attribute name="fromRunningModeId" type="int" use="required"/>
 		<attribute name="toRunningModeId" type="int" use="required"/>
 		<attribute name="transitionCost" type="double"/>
-		<attribute name="transitionTime" type="duration" use="optional"/>
+		<attribute name="transitionDuration" type="duration" use="optional"/>
 	</complexType>
 	<simpleType name="CurrencyType">
 		<restriction base="string">
@@ -588,7 +589,7 @@
 									<sequence>
 										<element name="fillingRate" type="double" minOccurs="1" maxOccurs="1"/>
 										<element name="runningCost" type="decimal" minOccurs="0" maxOccurs="1"/>
-										<element name="electricityPower" type="double" minOccurs="0" maxOccurs="1"/>
+										<element name="electricalPower" type="double" minOccurs="0" maxOccurs="1"/>
 										<element name="gasFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
 										<element name="heatTemperature" type="double" minOccurs="0" maxOccurs="1"/>
 										<element name="heatFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
@@ -606,7 +607,7 @@
 		<sequence>
 			<element name="fillingRate" type="double" minOccurs="1"/>
 			<element name="runningCost" type="decimal" minOccurs="0"/>
-			<element name="electricityPower" type="double" minOccurs="0" maxOccurs="1"/>
+			<element name="electricalPower" type="double" minOccurs="0" maxOccurs="1"/>
 			<element name="gasFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
 			<element name="heatTemperature" type="double" minOccurs="0" maxOccurs="1"/>
 			<element name="heatFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
@@ -657,7 +658,7 @@
 		<sequence>
 			<element name="runningModes" type="efi:StorageRunningModes"/>
 			<element name="timers" type="efi:Timers" minOccurs="0" maxOccurs="1"/>
-			<element name="transitions" type="efi:Transitions" minOccurs="0" maxOccurs="1"/>
+			<element name="transitions" type="efi:Transitions" minOccurs="1" maxOccurs="1"/>
 		</sequence>
 		<attribute name="actuatorId" type="int" use="required"/>
 	</complexType>
@@ -681,7 +682,7 @@
 			<complexContent>
 				<extension base="efi:StorageUpdate">
 					<sequence>
-						<element name="actuatorBehaviours" type="efi:ActuatorBehaviours" minOccurs="0" maxOccurs="1"/>
+						<element name="actuatorBehaviours" type="efi:ActuatorBehaviours" minOccurs="1" maxOccurs="1"/>
 						<element name="leakageBehaviour" type="efi:LeakageFunction" minOccurs="0" maxOccurs="1"/>
 					</sequence>
 				</extension>
@@ -704,25 +705,35 @@
 			<element name="timerUpdate" type="efi:TimerUpdate" minOccurs="0" maxOccurs="unbounded"/>
 		</sequence>
 	</complexType>
-	<complexType name="ActuatorUpdate">
+	<complexType name="ActuatorStatus">
 		<sequence>
 			<element name="currentRunningMode" type="int"/>
+			<element name="runningModeFactor" minOccurs="0" maxOccurs="1">
+				<simpleType>
+					<restriction base="double">
+						<minInclusive value="0.0"/>
+						<maxInclusive value="1.0"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="previousRunningModeId" type="int" minOccurs="0" maxOccurs="1"/>
+			<element name="transitionTimestamp" type="dateTime" minOccurs="0" maxOccurs="1"/>
 			<element name="timerUpdates" type="efi:TimerUpdates" minOccurs="0"/>
 		</sequence>
 		<attribute name="actuatorId" type="int" use="required"/>
 	</complexType>
-	<complexType name="ActuatorUpdates">
+	<complexType name="ActuatorStatuses">
 		<sequence>
-			<element name="actuatorUpdate" type="efi:ActuatorUpdate" minOccurs="1" maxOccurs="unbounded"/>
+			<element name="actuatorStatus" type="efi:ActuatorStatus" minOccurs="1" maxOccurs="unbounded"/>
 		</sequence>
 	</complexType>
-	<element name="StorageStateUpdate">
+	<element name="StorageStatus">
 		<complexType>
 			<complexContent>
 				<extension base="efi:StorageUpdate">
 					<sequence>
 						<element name="currentFillLevel" type="double"/>
-						<element name="actuatorUpdates" type="efi:ActuatorUpdates" minOccurs="0"/>
+						<element name="actuatorStatuses" type="efi:ActuatorStatuses" minOccurs="0"/>
 					</sequence>
 				</extension>
 			</complexContent>
@@ -738,9 +749,8 @@
 				</complexType>
 			</element>
 		</sequence>
-		<attribute name="startTime" type="dateTime"/>
 	</complexType>
-	<element name="StorageTargetProfileUpdate">
+	<element name="StorageFillLevelTargetProfile">
 		<complexType>
 			<complexContent>
 				<extension base="efi:StorageUpdate">
@@ -751,16 +761,16 @@
 			</complexContent>
 		</complexType>
 	</element>
-	<element name="StorageUsageForecastUpdate">
+	<element name="StorageUsageForecast">
 		<complexType>
 			<complexContent>
 				<extension base="efi:StorageUpdate">
 					<sequence>
-						<element name="storageUsageForecast">
+						<element name="usageForecast">
 							<complexType>
 								<choice>
-									<element name="storageUsageProfile" type="efi:StorageUsageProfile"/>
-									<element name="storageUsageProbabilityProfile" type="efi:StorageUsageProbabilityProfile"/>
+									<element name="usageProfile" type="efi:StorageUsageProfile"/>
+									<element name="usageProbabilityProfile" type="efi:StorageUsageProbabilityProfile"/>
 								</choice>
 							</complexType>
 						</element>
@@ -816,9 +826,11 @@
 			<extension base="efi:RunningMode">
 				<sequence>
 					<element name="runningCost" type="decimal" minOccurs="0" maxOccurs="1"/>
-					<element name="electricityConsumption" type="double" minOccurs="0" maxOccurs="1"/>
-					<element name="gasConsumption" type="double" minOccurs="0" maxOccurs="1"/>
-					<element name="heatConsumption" type="double" minOccurs="0" maxOccurs="1"/>
+					<element name="electricalPower" type="double" minOccurs="0" maxOccurs="1"/>
+					<element name="gasFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
+					<element name="heatTemperature" type="double" minOccurs="0" maxOccurs="1"/>
+					<element name="heatFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
+					<element name="heatThermalPower" type="double" minOccurs="0" maxOccurs="1"/>
 				</sequence>
 			</extension>
 		</complexContent>
@@ -826,9 +838,11 @@
 	<complexType name="AdjustableContinuousRunningModeData" abstract="true">
 		<sequence>
 			<element name="runningCost" type="decimal" minOccurs="0"/>
-			<element name="electricityConsumption" type="double" minOccurs="0"/>
-			<element name="gasConsumption" type="double" minOccurs="0"/>
-			<element name="heatConsumption" type="double" minOccurs="0"/>
+			<element name="electricalPower" type="double" minOccurs="0" maxOccurs="1"/>
+			<element name="gasFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
+			<element name="heatTemperature" type="double" minOccurs="0" maxOccurs="1"/>
+			<element name="heatFlowRate" type="double" minOccurs="0" maxOccurs="1"/>
+			<element name="heatThermalPower" type="double" minOccurs="0" maxOccurs="1"/>
 		</sequence>
 	</complexType>
 	<complexType name="AdjustableContinuousRunningMode">
@@ -868,7 +882,7 @@
 					<sequence>
 						<element name="runningModes" type="efi:AdjustableRunningModes"/>
 						<element name="timers" type="efi:Timers" minOccurs="0" maxOccurs="1"/>
-						<element name="transitions" type="efi:Transitions" minOccurs="0" maxOccurs="1"/>
+						<element name="transitions" type="efi:Transitions" minOccurs="1" maxOccurs="1"/>
 					</sequence>
 				</extension>
 			</complexContent>
@@ -879,12 +893,22 @@
 			<extension base="efi:FlexibilityUpdate"/>
 		</complexContent>
 	</complexType>
-	<element name="AdjustableStateUpdate">
+	<element name="AdjustableStatus">
 		<complexType>
 			<complexContent>
 				<extension base="efi:AdjustableUpdate">
 					<sequence>
-						<element name="currentRunningModeId" type="int"/>
+						<element name="currentRunningModeId" type="int" minOccurs="1" maxOccurs="1"/>
+						<element name="runningModeFactor" minOccurs="0" maxOccurs="1">
+							<simpleType>
+								<restriction base="double">
+									<minInclusive value="0.0"/>
+									<maxInclusive value="1.0"/>
+								</restriction>
+							</simpleType>
+						</element>
+						<element name="previousRunningModeId" type="int" minOccurs="0" maxOccurs="1"/>
+						<element name="transitionTimestamp" type="dateTime" minOccurs="0" maxOccurs="1"/>
 						<element name="timerUpdates" type="efi:TimerUpdates" minOccurs="1" maxOccurs="1"/>
 					</sequence>
 				</extension>
