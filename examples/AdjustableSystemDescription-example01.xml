@@ -11,25 +11,25 @@
   <efi:runningModes>
     <efi:discreteRunningMode efi:id="0" efi:label="Off">
       <efi:runningCost>0.0001</efi:runningCost>
-      <efi:electricityConsumption>0.0</efi:electricityConsumption>
+      <efi:electricalPower>0.0</efi:electricalPower>
     </efi:discreteRunningMode>
     <efi:continuousRunningMode efi:id="1" efi:label="On">
       <efi:lowerBound>
         <efi:runningCost>0</efi:runningCost>
-        <efi:electricityConsumption>0</efi:electricityConsumption>
+        <efi:electricalPower>0</efi:electricalPower>
       </efi:lowerBound>
       <efi:upperBound>
         <efi:runningCost>0.000001</efi:runningCost>
-        <efi:electricityConsumption>-1000</efi:electricityConsumption>
+        <efi:electricalPower>-1000</efi:electricalPower>
       </efi:upperBound>
     </efi:continuousRunningMode>
   </efi:runningModes>
   <efi:timers>
-    <efi:timer efi:id="0" efi:label="" />
+    <efi:timer efi:id="0" efi:label="" efi:duration="P1D" />
   </efi:timers>
   <efi:transitions>
     <efi:transition efi:fromRunningModeId="0" efi:toRunningModeId="0"
-      efi:transitionCost="0.0" efi:transitionTime="P1D">
+      efi:transitionCost="0.0" efi:transitionDuration="P1D">
       <efi:startTimers>
         <efi:timerReference efi:timerId="0" />
       </efi:startTimers>

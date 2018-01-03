@@ -5,8 +5,8 @@
     <efi:efiResourceId>efi:efiResourceId</efi:efiResourceId>
     <efi:timestamp>2001-12-31T12:00:00</efi:timestamp>
   </efi:header>
-  <efi:mesaurementTimestamp>2001-12-31T12:00:00</efi:mesaurementTimestamp>
-  <efi:electricityMesaurement efi:power="501" />
-  <efi:gasMesaurement efi:flowRate="501" />
-  <efi:heatMesaurement efi:temperature="501" efi:flowRate="20" efi:thermalPower="100" />
+  <efi:measurementTimestamp>2001-12-31T12:00:00</efi:measurementTimestamp>
+  <efi:electricityMeasurement efi:power="0.0" />
+  <efi:gasMeasurement efi:flowRate="501" />
+  <efi:heatMeasurement efi:temperature="501" efi:flowRate="20" efi:thermalPower="100" />
 </efi:Measurement>
